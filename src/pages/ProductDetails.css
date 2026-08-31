@@ -1,0 +1,170 @@
+/* ---- Product Details Page ---- */
+.product-details-container {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.product-details {
+  display: flex;
+  gap: 2.5rem;
+  background: var(--white);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: var(--shadow);
+}
+
+.pd-left {
+  flex: 1;
+}
+
+.product-image {
+  width: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.pd-right {
+  flex: 1;
+}
+
+.pd-brand {
+  color: var(--gray);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.pd-right h2 {
+  font-size: 1.8rem;
+  color: var(--primary);
+  margin: 0.3rem 0;
+}
+
+.pd-price {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--accent);
+  margin: 0.5rem 0;
+}
+
+.pd-stock {
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.pd-stock.low {
+  color: #d97706;
+}
+
+.pd-stock.out {
+  color: var(--red);
+}
+
+.pd-desc {
+  color: #555;
+  margin-bottom: 1.5rem;
+}
+
+.details-row {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 0.8rem;
+}
+
+.details-row label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  min-width: 40px;
+}
+
+.details-row select {
+  padding: 0.5rem;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.pd-actions {
+  display: flex;
+  gap: 0.8rem;
+  margin: 1.5rem 0;
+}
+
+.pd-actions button {
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 25px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background 0.2s;
+}
+
+.pd-actions button:hover {
+  background: var(--accent-hover);
+}
+
+.pd-actions button.btn-added {
+  background: var(--green);
+}
+
+.pd-actions button.btn-secondary {
+  background: var(--primary);
+}
+
+.pd-actions button.btn-secondary:hover {
+  background: #333;
+}
+
+.product-info {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+}
+
+.product-info h3 {
+  margin-bottom: 0.8rem;
+  color: var(--primary);
+}
+
+.product-info ul {
+  list-style: none;
+}
+
+.product-info li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid #e9ecef;
+  font-size: 0.9rem;
+}
+
+.product-info li:last-child {
+  border-bottom: none;
+}
+
+.product-info li span {
+  color: var(--gray);
+}
+
+@media (max-width: 768px) {
+  .product-details {
+    flex-direction: column;
+  }
+}

@@ -63,6 +63,18 @@ $pdo->exec("
         FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE,
         FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+    CREATE TABLE IF NOT EXISTS `stock_log` (
+        `id` INT AUTO_INCREMENT PRIMARY KEY,
+        `product_id` INT NOT NULL,
+        `change_amount` INT NOT NULL DEFAULT 0,
+        `reason` VARCHAR(255) DEFAULT NULL,
+        `changed_by` VARCHAR(100) DEFAULT NULL,
+        `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
+        INDEX `idx_product` (`product_id`),
+        INDEX `idx_created_at` (`created_at`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ");
 
 // 2. Seed Categories
@@ -100,7 +112,8 @@ $userStmt = $pdo->prepare("INSERT INTO users (id, full_name, email, password_has
 foreach ($users as $u) {
     $userStmt->execute($u);
 }
-echo "[✓] Default users created/updated (Admin: admin@solestyle.com / admin123, Customer: customer@solestyle.com / password123).\n";
+
+echo "[OK] Default users created/updated (Admin: admin@megafoot.com / admin123, Customer: customer@megafoot.com / password123).\n";
 
 // 4. Truncate / Refresh Products
 $pdo->exec("SET FOREIGN_KEY_CHECKS = 0");
@@ -158,7 +171,6 @@ foreach ($products as $p) {
     ]);
     $count++;
 }
-
 echo "[✓] Successfully seeded $count products across " . count($catIds) . " categories into solestyle_db.\n";
 echo "\nSeeding completed successfully!\n";
 ?>
