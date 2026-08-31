@@ -55,11 +55,12 @@
 .auth-form input,
 .auth-form select {
   width: 100%;
-  padding: 0.7rem 0.9rem;
-  border: 1px solid #dee2e6;
-  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid #dee2e6;
+  border-radius: 10px;
   font-size: 0.9rem;
   outline: none;
+  transition: border 0.2s, box-shadow 0.2s;
 }
 
 .auth-form input:focus,
@@ -68,22 +69,40 @@
   box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
 }
 
+.auth-form input.invalid {
+  border-color: var(--red);
+}
+
+.auth-form input.invalid:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.field-error {
+  display: block;
+  color: var(--red);
+  font-size: 0.78rem;
+  font-weight: 600;
+  margin-top: 0.35rem;
+}
+
 .auth-btn {
   width: 100%;
-  padding: 0.75rem;
+  padding: 0.85rem;
   border: none;
-  border-radius: 25px;
+  border-radius: 10px;
   background: var(--accent);
   color: #fff;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 1rem;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, transform 0.1s;
   margin-top: 0.5rem;
+  letter-spacing: 0.3px;
 }
 
 .auth-btn:hover {
   background: var(--accent-hover);
+  transform: translateY(-1px);
 }
 
 .auth-btn:disabled {

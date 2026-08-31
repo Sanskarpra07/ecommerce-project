@@ -4,13 +4,16 @@ import { useCart } from '../context/CartContext';
 import api from '../api';
 import './ProductDetails.css';
 
+const SIZES = ['6','7','8','9','10','11','12'];
+
 export default function ProductDetails() {
   const { id } = useParams();
   const { addToCart } = useCart();
   const [product, setProduct] = useState(null);
+  const [selectedSize, setSelectedSize] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const [size, setSize] = useState('9');
-  const [showDetails, setShowDetails] = useState(false);
+  const [tab, setTab] = useState('description');
+  const [error, setError] = useState('');
   const [added, setAdded] = useState(false);
 
   useEffect(() => {
@@ -18,75 +21,153 @@ export default function ProductDetails() {
       try {
         const response = await api.get('/products.php', { params: { id } });
         setProduct(response.data.product);
-      } catch (error) {
-        console.error('Error fetching product:', error);
+        setError('');
+      } catch (err) {
+        setError('Failed to load product details.');
       }
     };
     fetchProduct();
   }, [id]);
 
-  if (!product) return <div className="loading-text">Loading product...</div>;
+  if (!product) {
+    return <div className="loading-text">{error || 'Loading product...'}</div>;
+  }
 
   const stockClass = product.stock_quantity > 20 ? '' : product.stock_quantity > 0 ? 'low' : 'out';
 
   const handleAdd = () => {
-    addToCart({ ...product, size }, quantity);
+    if (!selectedSize) {
+      setError('Please select a size.');
+      return;
+    }
+    setError('');
+    addToCart({ ...product, size: selectedSize }, quantity);
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);
   };
 
   return (
     <div className="product-details-container">
-      <Link to="/catalog" className="back-link">Back to Catalog</Link>
+      <div className="pd-breadcrumb">
+        <Link to="/">Home</Link>
+        <span>/</span>
+        <Link to="/catalog">Shop</Link>
+        <span>/</span>
+        <span>{product.name}</span>
+      </div>
+
       <div className="product-details">
         <div className="pd-left">
-          <img src={product.image_url} alt={product.name} className="product-image" />
+          <div className="pd-image-wrap">
+            <img
+              src={product.image_url || 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80'}
+              alt={product.name}
+              className="product-image"
+            />
+            {product.stock_quantity <= 5 && product.stock_quantity > 0 && (
+              <span className="pd-low-badge">Low Stock</span>
+            )}
+            {product.stock_quantity === 0 && (
+              <span className="pd-out-badge">Out of Stock</span>
+            )}
+          </div>
         </div>
+
         <div className="pd-right">
-          <span className="pd-brand">{product.brand}</span>
+          <span className="pd-brand">{product.brand || 'MegaFoot'}</span>
           <h2>{product.name}</h2>
-          <p className="pd-price">${parseFloat(product.price).toFixed(2)}</p>
+
+          <div className="pd-rating">
+            {'\u2605\u2605\u2605\u2605\u2605'}
+            <span>(4.9) | {product.id * 37} reviews</span>
+          </div>
+
           <p className={`pd-stock ${stockClass}`}>
-            {product.stock_quantity > 0 ? `In Stock (${product.stock_quantity} available)` : 'Out of Stock'}
+            {product.stock_quantity > 0
+              ? `In Stock (${product.stock_quantity} available)`
+              : 'Currently Out of Stock'}
           </p>
-          <p className="pd-desc">{product.description}</p>
 
-          <div className="details-row">
-            <label>Size:</label>
-            <select value={size} onChange={(e) => setSize(e.target.value)}>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-              <option value="10">10</option>
-              <option value="11">11</option>
-            </select>
+          <div className="pd-price-row">
+            <p className="pd-price">${parseFloat(product.price).toFixed(2)}</p>
+            <span className="pd-tax">inclusive of all taxes</span>
           </div>
-          <div className="details-row">
-            <label>Qty:</label>
-            <select value={quantity} onChange={(e) => setQuantity(parseInt(e.target.value))}>
-              {[...Array(5)].map((_, i) => (
-                <option key={i} value={i + 1}>{i + 1}</option>
+
+          <p className="pd-desc">{product.description || 'Premium quality footwear designed for comfort and style.'}</p>
+
+          <div className="pd-size-row">
+            <label><strong>Select Size:</strong> <span>Size Guide</span></label>
+            <div className="pd-sizes">
+              {SIZES.map((s) => (
+                <button
+                  key={s}
+                  className={`pd-size ${selectedSize === s ? 'active' : ''}`}
+                  onClick={() => setSelectedSize(s)}
+                >
+                  {s}
+                </button>
               ))}
-            </select>
+            </div>
           </div>
+
+          <div className="pd-qty-row">
+            <label><strong>Quantity:</strong></label>
+            <div className="qty-selector">
+              <button onClick={() => setQuantity(Math.max(1, quantity - 1))}>&minus;</button>
+              <span>{quantity}</span>
+              <button onClick={() => setQuantity(Math.min(5, quantity + 1))}>+</button>
+            </div>
+          </div>
+
+          {error && <p className="pd-error">{error}</p>}
+
           <div className="pd-actions">
-            <button onClick={handleAdd} className={added ? 'btn-added' : ''}>
-              {added ? 'Added!' : 'Add to Cart'}
-            </button>
-            <button className="btn-secondary" onClick={() => setShowDetails(!showDetails)}>
-              {showDetails ? 'Hide Details' : 'View Details'}
+            <button
+              onClick={handleAdd}
+              className={`pd-add-btn ${added ? 'btn-added' : ''}`}
+              disabled={product.stock_quantity === 0}
+            >
+              {product.stock_quantity === 0
+                ? 'Out of Stock'
+                : added ? '\u2713 Added!' : 'Add to Cart'}
             </button>
           </div>
 
-          {showDetails && (
-            <div className="product-info">
-              <h3>Specifications</h3>
-              <ul>
-                <li><span>Category</span><strong>{product.category_name || product.category_id}</strong></li>
-                <li><span>Color</span><strong>{product.color || 'N/A'}</strong></li>
-                <li><span>SKU</span><strong>MF-{product.id}</strong></li>
-              </ul>
-            </div>
+          <div className="pd-trust">
+            <div><span>&#128666;</span> Free shipping over $100</div>
+            <div><span>&#128257;</span> 30-day return policy</div>
+            <div><span>&#128274;</span> Secure checkout</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Tabs: Description + Specifications */}
+      <div className="pd-tabs">
+        <div className="pd-tab-headers">
+          <button className={tab === 'description' ? 'active' : ''} onClick={() => setTab('description')}>
+            Description
+          </button>
+          <button className={tab === 'specs' ? 'active' : ''} onClick={() => setTab('specs')}>
+            Specifications
+          </button>
+        </div>
+        <div className="pd-tab-content">
+          {tab === 'description' ? (
+            <p>
+              {product.description || 'This premium {brand} footwear delivers exceptional comfort, durability, and style. Perfect for everyday wear, athletic performance, and everything in between.'}
+            </p>
+          ) : (
+            <ul className="pd-specs">
+              <li><span>Brand</span><strong>{product.brand || 'MegaFoot'}</strong></li>
+              <li><span>Category</span><strong>{product.category_name || product.category_id}</strong></li>
+              <li><span>Color</span><strong>{product.color || 'N/A'}</strong></li>
+              <li><span>SKU</span><strong>MF-{product.id}</strong></li>
+              <li><span>Availability</span>
+                <strong>
+                  {product.stock_quantity > 0 ? `${product.stock_quantity} in stock` : 'Out of stock'}
+                </strong>
+              </li>
+            </ul>
           )}
         </div>
       </div>

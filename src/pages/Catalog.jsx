@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import api from '../api';
 import ProductCard from '../components/ProductCard';
 import FilterSidebar from '../components/FilterSidebar';
@@ -11,6 +11,8 @@ export default function Catalog() {
   const initialSearch = searchParams.get('search') || '';
 
   const [products, setProducts] = useState([]);
+  const [filterSidebar, setFilterSidebar] = useState(false);
+  const [sort, setSort] = useState('default');
   const [filters, setFilters] = useState({
     category: initialCategory,
     size: '',
@@ -51,31 +53,76 @@ export default function Catalog() {
     fetchProducts();
   }, [fetchProducts]);
 
+  const sortedProducts = [...products];
+  if (sort === 'price-asc') sortedProducts.sort((a, b) => a.price - b.price);
+  if (sort === 'price-desc') sortedProducts.sort((a, b) => b.price - a.price);
+  if (sort === 'name') sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
+
+  const activeCategoryName =
+    filters.category === '1' ? 'Running'
+    : filters.category === '2' ? 'Casual'
+    : filters.category === '3' ? 'Formal'
+    : filters.category === '4' ? 'Sneakers'
+    : null;
+
+  const heading = filters.search
+    ? `"${filters.search}"`
+    : activeCategoryName || 'All Products';
+
   return (
-    <div className="catalog">
-      <aside>
-        <FilterSidebar setFilters={setFilters} initialCategory={filters.category} />
-      </aside>
-      <main className="product-list">
-        <h2>
-          {filters.search
-            ? `Search Results for "${filters.search}"`
-            : filters.category
-            ? 'Filtered Products'
-            : 'All Products'}
-        </h2>
-        {loading ? (
-          <p className="loading-text">Loading awesome shoes...</p>
-        ) : products.length === 0 ? (
-          <p className="loading-text">No products found. Try adjusting filters.</p>
-        ) : (
-          <div className="product-grid">
-            {products.map((p) => (
-              <ProductCard key={p.id} product={p} />
-            ))}
+    <div className="catalog-layout">
+      <div className="catalog-breadcrumb">
+        <Link to="/">Home</Link>
+        <span>/</span>
+        <span>Shop</span>
+        {activeCategoryName && <><span>/</span><span>{activeCategoryName}</span></>}
+      </div>
+
+      <div className="catalog">
+        <button className="mobile-filter-toggle" onClick={() => setFilterSidebar(!filterSidebar)}>
+          {filterSidebar ? 'Hide Filters' : 'Show Filters'}
+        </button>
+
+        <aside className={filterSidebar ? 'visible' : ''}>
+          <FilterSidebar setFilters={setFilters} initialCategory={filters.category} />
+        </aside>
+
+        <main className="product-list">
+          <div className="catalog-toolbar">
+            <div>
+              <h2>{heading}</h2>
+              <p className="product-count">{sortedProducts.length} {sortedProducts.length === 1 ? 'Product' : 'Products'}</p>
+            </div>
+            <div className="sort-wrap">
+              <label htmlFor="sort">Sort:</label>
+              <select id="sort" value={sort} onChange={(e) => setSort(e.target.value)}>
+                <option value="default">Featured</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="name">Name: A-Z</option>
+              </select>
+            </div>
           </div>
-        )}
-      </main>
+
+          {loading ? (
+            <div className="loading-state">
+              <div className="spinner" />
+              <p>Loading awesome shoes...</p>
+            </div>
+          ) : sortedProducts.length === 0 ? (
+            <div className="empty-state">
+              <span className="empty-icon">&#128717;</span>
+              <p>No products found. Try adjusting your filters.</p>
+            </div>
+          ) : (
+            <div className="product-grid">
+              {sortedProducts.map((p) => (
+                <ProductCard key={p.id} product={p} />
+              ))}
+            </div>
+          )}
+        </main>
+      </div>
     </div>
   );
 }
