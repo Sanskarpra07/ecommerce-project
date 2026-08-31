@@ -87,7 +87,16 @@ export default function Cart() {
             {items.map((item) => (
               <div key={item.product.id} className="cart-item">
                 <Link to={`/product/${item.product.id}`} className="cart-item-img">
-                  <img src={item.product.image_url} alt={item.product.name} />
+                  <img
+                    src={item.product.image_url}
+                    alt={item.product.name}
+                    onError={(e) => {
+                      if (!e.target.dataset.fbk) {
+                        e.target.dataset.fbk = '1';
+                        e.target.src = 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=200&q=80';
+                      }
+                    }}
+                  />
                 </Link>
                 <div className="item-details">
                   <span className="brand">{item.product.brand || 'MegaFoot'}</span>

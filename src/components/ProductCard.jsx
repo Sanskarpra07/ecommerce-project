@@ -4,6 +4,13 @@ import { useCart } from '../context/CartContext';
 import '../pages/Shop.css';
 
 const SIZES = ['7','8','9','10','11','12'];
+const FALLBACK_IMG = 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80';
+
+const handleImgError = (e) => {
+  if (e.target.src !== FALLBACK_IMG) {
+    e.target.src = FALLBACK_IMG;
+  }
+};
 
 export default function ProductCard({ product }) {
   const { addToCart } = useCart();
@@ -30,9 +37,10 @@ export default function ProductCard({ product }) {
       <Link to={`/product/${product.id}`} className="card-link">
         <div className="card-img-wrap">
           <img
-            src={product.image_url || 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80'}
+            src={product.image_url || FALLBACK_IMG}
             alt={product.name}
             className="product-img"
+            onError={handleImgError}
           />
           <div className="card-badge-wrap">
             {product.stock_quantity <= 5 && product.stock_quantity > 0 && (

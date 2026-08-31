@@ -11,6 +11,14 @@ const CATEGORIES = [
   { id: 4, name: 'Sneakers', tagline: 'Street ready', img: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80' },
 ];
 
+const CAT_FALLBACK = 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80';
+
+const handleImgError = (e) => {
+  if (e.target.src !== CAT_FALLBACK) {
+    e.target.src = CAT_FALLBACK;
+  }
+};
+
 export default function Home() {
   const [trending, setTrending] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -104,7 +112,7 @@ export default function Home() {
         <div className="category-grid">
           {displayCategories.map((cat) => (
             <Link to={`/catalog?category=${cat.id}`} key={cat.id} className="category-card">
-              <img src={cat.img} alt={cat.name} />
+              <img src={cat.img} alt={cat.name} onError={handleImgError} />
               <div className="category-overlay">
                 <h3>{cat.name}</h3>
                 <span>{cat.tagline}</span>

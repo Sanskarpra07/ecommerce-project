@@ -5,6 +5,13 @@ import api from '../api';
 import './ProductDetails.css';
 
 const SIZES = ['6','7','8','9','10','11','12'];
+const FALLBACK_IMG = 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80';
+
+const handleImgError = (e) => {
+  if (e.target.src !== FALLBACK_IMG) {
+    e.target.src = FALLBACK_IMG;
+  }
+};
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -60,9 +67,10 @@ export default function ProductDetails() {
         <div className="pd-left">
           <div className="pd-image-wrap">
             <img
-              src={product.image_url || 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80'}
+              src={product.image_url || FALLBACK_IMG}
               alt={product.name}
               className="product-image"
+              onError={handleImgError}
             />
             {product.stock_quantity <= 5 && product.stock_quantity > 0 && (
               <span className="pd-low-badge">Low Stock</span>
