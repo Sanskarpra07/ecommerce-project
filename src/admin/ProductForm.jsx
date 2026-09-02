@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../api';
 import { useToast } from '../components/Toast';
+import './css/product-form.css';
 
 const DEFAULT_IMAGE = 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80';
 
@@ -27,6 +28,8 @@ export default function ProductForm() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(isEdit);
   const [saving, setSaving] = useState(false);
+  const [imageMode, setImageMode] = useState('url');
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     const loadCategories = async () => {
@@ -73,6 +76,34 @@ export default function ProductForm() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast('Please select an image file', 'error');
+      return;
+    }
+
+    const fd = new FormData();
+    fd.append('image', file);
+    fd.append('admin_token', 'admin123');
+
+    setUploading(true);
+    try {
+      const res = await api.post('/upload.php', fd, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      setForm((prev) => ({ ...prev, image_url: res.data.url }));
+      toast('Image uploaded successfully', 'success');
+    } catch (error) {
+      const msg = error.response?.data?.message || 'Failed to upload image';
+      toast(msg, 'error');
+    } finally {
+      setUploading(false);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -209,14 +240,55 @@ export default function ProductForm() {
             />
           </label>
           <label>
-            Image URL
-            <input
-              type="url"
-              name="image_url"
-              placeholder="https://..."
-              value={form.image_url}
-              onChange={handleChange}
-            />
+            Image
+            <div className="image-mode-toggle">
+              <button
+                type="button"
+                className={`btn-mode ${imageMode === 'url' ? 'active' : ''}`}
+                onClick={() => setImageMode('url')}
+              >
+                URL
+              </button>
+              <button
+                type="button"
+                className={`btn-mode ${imageMode === 'upload' ? 'active' : ''}`}
+                onClick={() => setImageMode('upload')}
+              >
+                Upload
+              </button>
+            </div>
+            {imageMode === 'url' ? (
+              <input
+                type="url"
+                name="image_url"
+                placeholder="https://..."
+                value={form.image_url}
+                onChange={handleChange}
+              />
+            ) : (
+              <div className="upload-dropzone">
+                <input
+                  type="file"
+                  id="product-image-upload"
+                  accept="image/*"
+                  className="upload-input"
+                  onChange={handleImageUpload}
+                />
+                <label htmlFor="product-image-upload" className="upload-label">
+                  {uploading ? 'Uploading...' : '\u2B06 Choose image to upload'}
+                </label>
+                <span className="upload-hint">JPG, PNG, GIF or WEBP up to 5MB</span>
+              </div>
+            )}
+            {(form.image_url) && (
+              <div className="image-preview">
+                <img
+                  src={form.image_url}
+                  alt="Preview"
+                  onError={(e) => { e.target.src = DEFAULT_IMAGE; }}
+                />
+              </div>
+            )}
           </label>
           <label className="form-full">
             Description

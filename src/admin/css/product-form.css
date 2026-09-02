@@ -1,0 +1,117 @@
+/* Product form — image URL / upload toggle + preview */
+.image-mode-toggle {
+  display: inline-flex;
+  gap: 0.4rem;
+  margin-top: 0.2rem;
+}
+
+.btn-mode {
+  padding: 0.35rem 1.1rem;
+  border: 1px solid #333;
+  border-radius: 8px;
+  background: #1b1b1b;
+  color: #cfcfcf;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.btn-mode:hover {
+  border-color: var(--accent);
+}
+
+.btn-mode.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.upload-dropzone {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  align-items: flex-start;
+}
+
+.upload-input {
+  display: none;
+}
+
+.upload-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1.2rem;
+  border: 1px dashed var(--accent);
+  border-radius: 8px;
+  color: var(--accent);
+  background: rgba(231, 76, 60, 0.06);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.upload-label:hover {
+  background: rgba(231, 76, 60, 0.12);
+}
+
+.upload-hint {
+  font-size: 0.72rem;
+  color: #8a8a8a;
+  font-weight: 400;
+}
+
+.image-preview {
+  margin-top: 0.5rem;
+}
+
+.image-preview img {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #2a2a2a;
+}
+
+.admin-form-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--admin-text);
+  margin-bottom: 0.3rem;
+}
+
+.logo-preview {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--admin-surface-2);
+  border: 1px solid var(--admin-border);
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  flex-wrap: wrap;
+}
+
+.logo-preview img {
+  max-height: 48px;
+  width: auto;
+  max-width: 180px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 8px;
+  padding: 4px 10px;
+}
+
+.logo-preview p {
+  font-size: 0.82rem;
+  color: var(--admin-text-dim);
+  margin-bottom: 0.4rem;
+}
+
+.small-btn {
+  padding: 0.4rem 1rem;
+  font-size: 0.82rem;
+}

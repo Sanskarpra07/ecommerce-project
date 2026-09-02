@@ -57,6 +57,7 @@ export default function Login() {
   return (
     <div className="auth-container">
       <div className="auth-header">
+        <div className="auth-brand-icon">&#128085;</div>
         <h2>Welcome Back</h2>
         <p>Sign in to your MegaFoot account</p>
       </div>

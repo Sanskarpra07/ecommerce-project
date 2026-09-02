@@ -1,0 +1,243 @@
+/* =========================================================
+   MegaFoot — Admin Dashboard (dark, primary/secondary)
+   Uses only brand colors: primary (black) + accent (red).
+   Scoped under .db2026-root so it does not leak to other
+   admin pages or the storefront.
+   ========================================================= */
+.db2026-root {
+  --primary: #111111;
+  --black: #0b0b0b;
+  --black-2: #161616;
+  --black-3: #1e1e1e;
+  --border: #2a2a2a;
+  --text: #cfcfcf;
+  --text-muted: #8a8a8a;
+  --accent: #e74c3c;
+  --accent-dim: rgba(231, 76, 60, 0.14);
+
+  background: var(--black);
+  border-radius: 20px;
+  padding: 24px;
+  color: var(--text);
+  min-height: calc(100vh - 4rem);
+}
+
+.db2026-root h1, .db2026-root h2, .db2026-root h3, .db2026-root h4 {
+  margin: 0;
+  color: #fff;
+  font-family: inherit;
+}
+
+.db2026-root a {
+  text-decoration: none;
+}
+
+.db2026-root .db2026-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* ---- Banner ---- */
+.db2026-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: linear-gradient(120deg, #151515 0%, #151515 62%, var(--accent-dim) 100%);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 22px 26px;
+  margin-bottom: 22px;
+}
+
+.db2026-eyebrow {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+
+.db2026-banner h2 {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.db2026-banner p {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 4px 0 0;
+}
+
+.db2026-date {
+  text-align: right;
+  padding-right: 16px;
+  border-right: 1px solid var(--border);
+}
+
+.db2026-lbl {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
+.db2026-val {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  margin-top: 2px;
+}
+
+/* ---- Grids ---- */
+.db2026-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.db2026-manage-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 16px;
+}
+
+/* ---- Metric cards ---- */
+.db2026-card {
+  background: var(--black-2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 20px;
+}
+
+.db2026-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.db2026-metric-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.db2026-icon-chip {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--accent-dim);
+  color: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.db2026-metric-value {
+  font-size: 26px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.db2026-metric-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ---- Section title ---- */
+.db2026-section-title {
+  margin: 26px 0 14px;
+}
+
+.db2026-section-title h3 {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.db2026-section-title p {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 2px 0 0;
+}
+
+/* ---- Manage cards ---- */
+.db2026-manage-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--black-2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 18px;
+  color: #fff;
+  transition: border-color 0.2s, transform 0.2s, background 0.2s;
+}
+
+.db2026-manage-card:hover {
+  border-color: var(--accent);
+  background: var(--black-3);
+  transform: translateY(-2px);
+}
+
+.db2026-manage-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.db2026-manage-title {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.db2026-manage-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.db2026-manage-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.db2026-manage-count {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.db2026-manage-arrow {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+@media (max-width: 1100px) {
+  .db2026-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .db2026-root { padding: 16px; border-radius: 14px; }
+  .db2026-grid { grid-template-columns: 1fr; }
+  .db2026-manage-grid { grid-template-columns: 1fr; }
+  .db2026-banner { padding: 18px; }
+  .db2026-banner h2 { font-size: 17px; }
+  .db2026-date { width: 100%; text-align: left; padding-right: 0; border-right: none; }
+}

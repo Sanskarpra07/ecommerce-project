@@ -2,11 +2,14 @@ import React from 'react';
 import { NavLink, Outlet, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { ToastProvider } from '../components/Toast';
+import { getStoreSettings } from '../settings';
 import './AdminLayout.css';
 import './css/admin-common.css';
 
 export default function AdminLayout() {
   const { user, isAdmin } = useAuth();
+  const logoUrl = getStoreSettings().logoUrl || '';
+  const storeUrl = (window.location.href || '').split('#')[0] || './';
 
   if (!isAdmin) {
     return (
@@ -26,7 +29,11 @@ export default function AdminLayout() {
       <div className="admin-shell">
         <aside className="admin-sidebar">
           <div className="admin-brand">
-            <h2>Mega<span>Foot</span></h2>
+            {logoUrl ? (
+              <img className="admin-brand-logo" src={logoUrl} alt="Store logo" />
+            ) : (
+              <h2>Mega<span>Foot</span></h2>
+            )}
             <p>Admin Panel</p>
           </div>
           <nav className="admin-nav">
@@ -54,7 +61,9 @@ export default function AdminLayout() {
           </nav>
           <div className="admin-user">
             <span className="admin-user-name">{user?.full_name}</span>
-            <Link to="/" className="admin-back-store">View Store &#8594;</Link>
+            <a href={storeUrl} target="_blank" rel="noopener noreferrer" className="admin-back-store">
+              View Store &#8599;
+            </a>
           </div>
         </aside>
         <main className="admin-content">

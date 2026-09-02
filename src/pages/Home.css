@@ -320,4 +320,20 @@
   .category-grid { grid-template-columns: 1fr 1fr; }
   .category-card { height: 220px; }
   .promo-banner h2 { font-size: 2rem; }
+  .section-header h2 { font-size: 1.8rem; }
+  .categories, .trending { padding: 0 1rem; }
+}
+
+@media (max-width: 480px) {
+  .hero { min-height: 60vh; }
+  .hero h1 { font-size: 2rem; }
+  .hero p { font-size: 1rem; }
+  .hero-tag { font-size: 0.75rem; }
+  .cta-primary, .cta-secondary { padding: 0.75rem 1.5rem; font-size: 0.9rem; }
+  .category-grid { grid-template-columns: 1fr; }
+  .category-card { height: 260px; }
+  .trust-strip { padding: 0 1rem; }
+  .promo-banner { padding: 3.5rem 1rem; }
+  .promo-banner h2 { font-size: 1.7rem; }
+  .promo-banner p { font-size: 0.95rem; }
 }

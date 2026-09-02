@@ -48,7 +48,7 @@ export default function ProductCard({ product }) {
             )}
           </div>
           <button className={`wishlist-btn ${liked ? 'active' : ''}`} onClick={handleWishlist} aria-label="Add to wishlist">
-            {liked ? '&#9829;' : '&#9825;'}
+            {liked ? '\u2665' : '\u2661'}
           </button>
         </div>
       </Link>

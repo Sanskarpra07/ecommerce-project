@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
+import api from '../api';
+import { getStoreSettings } from '../settings';
 
 export default function Navbar() {
   const { items } = useCart();
@@ -9,7 +11,23 @@ export default function Navbar() {
   const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
   const [search, setSearch] = useState('');
   const [mobileMenu, setMobileMenu] = useState(false);
+  const [logoUrl, setLogoUrl] = useState(getStoreSettings().logoUrl || '');
+  const [logoError, setLogoError] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const res = await api.get('/settings.php');
+        const url = res.data?.settings?.logoUrl;
+        if (mounted && url) setLogoUrl(url);
+      } catch (error) {
+        /* local settings only */
+      }
+    })();
+    return () => { mounted = false; };
+  }, []);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -24,14 +42,19 @@ export default function Navbar() {
     <nav className="navbar">
       <div className="nav-inner">
         <Link to="/" className="logo">
-          <span className="logo-icon">&#128085;</span>
-          <span className="logo-text">Mega<span>Foot</span></span>
+          {logoUrl && !logoError ? (
+            <img className="logo-img" src={logoUrl} alt="MegaFoot" onError={() => setLogoError(true)} />
+          ) : (
+            <>
+              <span className="logo-icon">&#128085;</span>
+              <span className="logo-text">Mega<span>Foot</span></span>
+            </>
+          )}
         </Link>
 
         <div className={`nav-links ${mobileMenu ? 'open' : ''}`}>
           <Link to="/" onClick={() => setMobileMenu(false)}>Home</Link>
           <Link to="/catalog" onClick={() => setMobileMenu(false)}>Shop</Link>
-          {isAdmin && <Link to="/admin" onClick={() => setMobileMenu(false)}>Admin</Link>}
         </div>
 
         <div className="nav-actions">

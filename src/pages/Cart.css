@@ -392,13 +392,22 @@
 }
 
 @media (max-width: 600px) {
+  .cart-page { padding: 1rem 0.75rem 3rem; }
+  .cart-heading { font-size: 1.5rem; }
   .cart-item {
     flex-wrap: wrap;
+    padding: 0.9rem;
   }
+  .cart-item-img { width: 70px; height: 70px; }
   .item-right {
     flex-direction: row;
     align-items: center;
     width: 100%;
     justify-content: space-between;
   }
+  .cart-summary { padding: 1.3rem; }
+  .order-success { padding: 3rem 1.25rem; }
+  .order-success-actions { flex-direction: column; align-items: stretch; }
+  .order-success-actions button,
+  .order-success-actions a { text-align: center; }
 }

@@ -373,3 +373,15 @@
   .product-image { min-height: 300px; }
   .pd-right h2 { font-size: 1.6rem; }
 }
+
+@media (max-width: 480px) {
+  .product-details-container { padding: 1rem 0.75rem 3rem; }
+  .product-details { padding: 1.25rem; }
+  .product-image { min-height: 240px; }
+  .pd-right h2 { font-size: 1.35rem; }
+  .pd-price { font-size: 1.8rem; }
+  .pd-sizes { gap: 0.4rem; }
+  .pd-size { width: 42px; height: 38px; font-size: 0.9rem; }
+  .pd-tab-headers button { padding: 0.85rem 1.1rem; font-size: 0.9rem; }
+  .pd-tab-content { padding: 1.4rem; }
+}

@@ -73,6 +73,7 @@ export default function Register() {
   return (
     <div className="auth-container">
       <div className="auth-header">
+        <div className="auth-brand-icon">&#128085;</div>
         <h2>Create an Account</h2>
         <p>Join MegaFoot to track orders &amp; explore top footwear</p>
       </div>
